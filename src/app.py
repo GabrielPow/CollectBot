@@ -7,7 +7,7 @@ from agents.agents import Orchestrator
 
 # 1. Page Configuration
 st.set_page_config(page_title="AI Data Pipeline Bot", page_icon="🤖", layout="wide")
-st.title("🤖 AI Data Collector & Formatter")
+st.title("🤖 CollectBot - AI Data Collector")
 st.caption("Upload a CSV dataset, define your criteria, and let the agents structure it.")
 
 # 2. Initialize Orchestrator in session state so it persists

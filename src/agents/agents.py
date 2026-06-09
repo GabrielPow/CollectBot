@@ -1,5 +1,5 @@
 import asyncio
-from agents.ai_model import upload_csv,collector_fetch_from_file,collector_fetch ,qualifier_analyze, formatter_export
+from agents.ai_model import upload_csv,collector_fetch_from_file,collector_fetch ,qualifier_analyze, json_to_csv_dynamic
 
 
 class Collector:
@@ -25,19 +25,10 @@ class Qualifier:
         return result
 
 
-class Formatter:
-    async def format(self, qualified_data: str, schema: list[str]) -> str:
-        print("[Formatter] Formatting to CSV...")
-        result = await asyncio.to_thread(formatter_export, qualified_data, schema)
-        print(result)
-        return result
-
-
 class Orchestrator:
     def __init__(self):
         self.collector = Collector()
         self.qualifier = Qualifier()
-        self.formatter = Formatter()
 
     async def run_pipeline(
         self,
@@ -54,11 +45,8 @@ class Orchestrator:
         # Step 2: Qualify
         qualified_data = await self.qualifier.qualify(raw_data, criteria)
 
-        # Step 3: Format (optional — only if schema provided)
-        if schema:
-            final_output = await self.formatter.format(qualified_data, schema)
-        else:
-            final_output = qualified_data
+        print("[System] Converting dynamic JSON schema to CSV...")
+        final_csv = json_to_csv_dynamic(qualified_data)
 
         print("\n--- Orchestrator: pipeline complete ---")
-        return final_output
+        return final_csv

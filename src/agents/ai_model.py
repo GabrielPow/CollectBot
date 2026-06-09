@@ -4,6 +4,7 @@ from google import genai
 from google.genai.types import GenerateContentConfig
 import json
 import re
+import pandas as pd
 
 
 # Load API key
@@ -79,16 +80,19 @@ def qualifier_analyze(raw_data: str, criteria: str) -> str:
     )
     return response.text.strip()
 
-
-def formatter_export(qualified_data: str, schema: list[str]) -> str:
-    """Format qualified data into CSV."""
-    system_instruction = f"""You are a Formatter agent. Your role is to:
-    - Convert the input into a valid CSV
-    - Use exactly these columns: {', '.join(schema)}
-    - Output ONLY the CSV text, no explanation"""
-
-    result = call_gemini(
-        f"Format this data as CSV:\n{qualified_data}",
-        system_instruction
-    )
-    return f"[Formatter] {result}"
+def json_to_csv_dynamic(qualifier_json_output: str) -> str:
+    """Dynamically converts any valid JSON array string into a CSV string."""
+    try:
+        # Clean any markdown fluff if the model returned it (e.g., ```json ... ```)
+        clean_json = qualifier_json_output.strip()
+        if clean_json.startswith("```"):
+            clean_json = "\n".join(clean_json.split("\n")[1:-1])
+            
+        # Parse JSON and load straight into Pandas
+        data = json.loads(clean_json)
+        df = pd.DataFrame(data)
+        
+        # Convert to CSV string format without a messy row index
+        return df.to_csv(index=False)
+    except Exception as e:
+        raise ValueError(f"Failed to dynamically convert JSON to CSV. Error: {e}")
