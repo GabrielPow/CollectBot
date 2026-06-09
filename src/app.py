@@ -20,19 +20,19 @@ with st.sidebar:
     
     task_input = st.text_area(
         "1. What data should the Collector fetch?",
-        value="Get all entries about renewable energy",
+        value="Extract records of countries making significant shifts toward low-carbon options.",
         help="Instruct the collection agent on what to look for."
     )
     
     criteria_input = st.text_area(
         "2. What are the Qualification criteria?",
-        value="Must mention solar, wind, or hydro. Relevance score >= 7.",
+        value="Must have a renewable energy share greater than 20% or notable increases in solar/wind generation. Assign relevance based on their progress scale.",
         help="The filter criteria used by the Qualifier agent."
     )
     
     schema_input = st.text_input(
         "3. Target Schema (comma-separated columns)",
-        value="title, source, relevance_score, summary",
+        value="country, year, renewable_share_percent, fossil_fuel_twh",
         help="The exact CSV headers you want the Formatter to output."
     )
 
