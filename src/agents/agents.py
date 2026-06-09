@@ -34,7 +34,6 @@ class Orchestrator:
         self,
         task: str,
         criteria: str,
-        schema: list[str],
         source_hint: str = ""
     ) -> str:
         print("\n--- Orchestrator: starting pipeline ---")

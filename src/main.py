@@ -36,5 +36,4 @@ async def run_and_save_pipeline(task, criteria, schema, source_file_path):
 asyncio.run(run_and_save_pipeline(
     task="Extract records of countries making significant shifts toward low-carbon options.", 
     criteria="Must have a renewable energy share greater than 20% or notable increases in solar/wind generation. Assign relevance based on their progress scale.", 
-    schema=["country", "year", "renewable_share_percent", "fossil_fuel_twh"], 
     source_file_path="test_sample.csv"))

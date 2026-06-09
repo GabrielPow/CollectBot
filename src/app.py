@@ -29,12 +29,6 @@ with st.sidebar:
         value="Must have a renewable energy share greater than 20% or notable increases in solar/wind generation. Assign relevance based on their progress scale.",
         help="The filter criteria used by the Qualifier agent."
     )
-    
-    schema_input = st.text_input(
-        "3. Target Schema (comma-separated columns)",
-        value="country, year, renewable_share_percent, fossil_fuel_twh",
-        help="The exact CSV headers you want the Formatter to output."
-    )
 
 # 4. Main Panel: File Upload
 uploaded_file = st.file_uploader("Upload your source CSV file", type=["csv"])
@@ -48,7 +42,6 @@ if uploaded_file is not None:
         st.dataframe(df_preview.head(5))
 
     # 5. Execution Button
-    schema_list = [col.strip() for col in schema_input.split(",") if col.strip()]
     
     if st.button("Run Pipeline 🚀", type="primary"):
         # Create a temporary file on disk because Gemini Files API requires a path
@@ -69,7 +62,6 @@ if uploaded_file is not None:
                     st.session_state.orchestrator.run_pipeline(
                         task=task_input,
                         criteria=criteria_input,
-                        schema=schema_list,
                         source_hint=temp_file_path
                     )
                 )
