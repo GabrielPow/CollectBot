@@ -70,7 +70,7 @@ if uploaded_file is not None:
                         task=task_input,
                         criteria=criteria_input,
                         schema=schema_list,
-                        source_file=temp_file_path
+                        source_hint=temp_file_path
                     )
                 )
                 
