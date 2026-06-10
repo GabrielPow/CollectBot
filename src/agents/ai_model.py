@@ -80,6 +80,34 @@ def qualifier_analyze(raw_data: str, criteria: str) -> str:
     )
     return response.text.strip()
 
+def formatter_interpret(qualified_json: str, formatting_suggestions: str) -> str:
+    """Refines the JSON data structure or text content based on stylistic suggestions."""
+    if not formatting_suggestions.strip():
+        return qualified_json # Bypass AI if no suggestions were provided
+        
+    system_instruction = """You are a Data Refiner and Interpreter. 
+    Your task is to take a structured JSON array and modify its fields, keys, or text values 
+    based strictly on the user's formatting suggestions. 
+    
+    CRITICAL: You must maintain valid JSON format in your output. Do not add conversational text."""
+
+    prompt = f"""
+    Formatting Suggestions: {formatting_suggestions}
+    
+    Input JSON Data:
+    {qualified_json}
+    """
+    
+    response = client.models.generate_content(
+        model=model_id,
+        contents=prompt,
+        config=GenerateContentConfig(
+            system_instruction=system_instruction,
+            response_mime_type="application/json"
+        )
+    )
+    return response.text.strip()
+
 def json_to_csv_dynamic(qualifier_json_output: str) -> str:
     """Dynamically converts any valid JSON array string into a CSV string."""
     try:

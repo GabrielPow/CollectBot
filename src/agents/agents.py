@@ -1,5 +1,5 @@
 import asyncio
-from agents.ai_model import upload_csv,collector_fetch_from_file,collector_fetch ,qualifier_analyze, json_to_csv_dynamic
+from agents.ai_model import upload_csv, collector_fetch_from_file, collector_fetch, qualifier_analyze, formatter_interpret, json_to_csv_dynamic
 
 
 class Collector:
@@ -34,7 +34,8 @@ class Orchestrator:
         self,
         task: str,
         criteria: str,
-        source_hint: str = ""
+        source_hint: str = "",
+        formatting_suggestions: str = ""
     ) -> str:
         print("\n--- Orchestrator: starting pipeline ---")
 
@@ -42,10 +43,20 @@ class Orchestrator:
         raw_data = await self.collector.collect(task, source_hint=source_hint)
 
         # Step 2: Qualify
-        qualified_data = await self.qualifier.qualify(raw_data, criteria)
+        qualified_json = await self.qualifier.qualify(raw_data, criteria)
 
+        # Step 3: Optional Formatter (Interprets stylistic suggestions)
+        if formatting_suggestions.strip():
+            print("[Formatter] Interpreting formatting suggestions...")
+            # Run through AI to reshape the JSON keys/values
+            final_json = await asyncio.to_thread(formatter_interpret, qualified_json, formatting_suggestions)
+        else:
+            print("[System] Skipping Formatter (No suggestions provided)...")
+            final_json = qualified_json
+
+        # Step 4: Python CSV Conversion
         print("[System] Converting dynamic JSON schema to CSV...")
-        final_csv = json_to_csv_dynamic(qualified_data)
+        final_csv = json_to_csv_dynamic(final_json)
 
         print("\n--- Orchestrator: pipeline complete ---")
         return final_csv

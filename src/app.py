@@ -30,6 +30,11 @@ with st.sidebar:
         help="The filter criteria used by the Qualifier agent."
     )
 
+    formatting_suggestions = st.text_area(
+    "4. Optional Formatting Suggestions (Leave blank to keep default layout)",
+    placeholder="Example: Rename columns to uppercase, or append '%' to numerical shares..."
+    )
+
 # 4. Main Panel: File Upload
 uploaded_file = st.file_uploader("Upload your source CSV file", type=["csv"])
 
@@ -39,7 +44,7 @@ if uploaded_file is not None:
     # Optional: Preview the raw file so the user knows it read correctly
     with st.expander("Preview Raw Uploaded Data"):
         df_preview = pd.read_csv(uploaded_file)
-        st.dataframe(df_preview.head(5))
+        st.dataframe(df_preview.head(10))
 
     # 5. Execution Button
     
@@ -62,7 +67,8 @@ if uploaded_file is not None:
                     st.session_state.orchestrator.run_pipeline(
                         task=task_input,
                         criteria=criteria_input,
-                        source_hint=temp_file_path
+                        source_hint=temp_file_path,
+                        formatting_suggestions=formatting_suggestions
                     )
                 )
                 
