@@ -1,3 +1,7 @@
+<div style="text-align: right;">
+  <a href="README.md">English</a> | <a href="README.pt.md">Español</a>
+</div>
+
 # CollectBot - AI Data Collection & Processing Pipeline
 
 CollectBot is an intelligent data collection and processing system powered by AI agents. It automates the process of extracting, qualifying, and formatting structured data from CSV sources using a multi-agent architecture built on Google's Gemini API.
