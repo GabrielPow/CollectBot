@@ -1,5 +1,5 @@
 <div style="text-align: right;">
-  <a href="README.md">English</a> | <a href="README.pt.md">Español</a>
+  <a href="README.md">English</a> | <a href="README.pt.md">Português</a>
 </div>
 
 # CollectBot - Pipeline de Coleta e Processamento de Dados com IA
