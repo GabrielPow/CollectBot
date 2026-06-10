@@ -20,19 +20,19 @@ with st.sidebar:
     
     task_input = st.text_area(
         "1. What data should the Collector fetch?",
-        value="Extract records of countries making significant shifts toward low-carbon options.",
+        placeholder="Extract records of countries making significant shifts toward low-carbon options.",
         help="Instruct the collection agent on what to look for."
     )
     
     criteria_input = st.text_area(
         "2. What are the Qualification criteria?",
-        value="Must have a renewable energy share greater than 20% or notable increases in solar/wind generation. Assign relevance based on their progress scale.",
+        placeholder="Must have a renewable energy share greater than 20% or notable increases in solar/wind generation. Assign relevance based on their progress scale.",
         help="The filter criteria used by the Qualifier agent."
     )
 
     formatting_suggestions = st.text_area(
-    "4. Optional Formatting Suggestions (Leave blank to keep default layout)",
-    placeholder="Example: Rename columns to uppercase, or append '%' to numerical shares..."
+        "3.. Optional Formatting Suggestions (Leave blank to keep default layout)",
+        placeholder="Example: Rename columns to uppercase, or append '%' to numerical shares..."
     )
 
 # 4. Main Panel: File Upload
